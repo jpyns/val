@@ -1,0 +1,394 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Veux-tu être ma Valentine? 💝</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #ffc3d5 0%, #ffb3c6 100%);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+            overflow: hidden;
+            position: relative;
+        }
+
+        /* Carte principale */
+        .card {
+            background: white;
+            border-radius: 30px;
+            padding: 40px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.15);
+            text-align: center;
+            max-width: 500px;
+            width: 100%;
+            position: relative;
+            z-index: 1;
+        }
+
+        /* Chat mignon en CSS */
+        .cat-container {
+            margin: 20px auto;
+            position: relative;
+            width: 150px;
+            height: 150px;
+        }
+
+        .cat {
+            width: 100px;
+            height: 100px;
+            background: #ffb3c6;
+            border-radius: 50%;
+            position: relative;
+            margin: 0 auto;
+        }
+
+        /* Oreilles du chat */
+        .cat::before,
+        .cat::after {
+            content: '';
+            position: absolute;
+            width: 0;
+            height: 0;
+            border-left: 25px solid transparent;
+            border-right: 25px solid transparent;
+            border-bottom: 40px solid #ffb3c6;
+            top: -25px;
+        }
+
+        .cat::before {
+            left: 5px;
+        }
+
+        .cat::after {
+            right: 5px;
+        }
+
+        /* Yeux du chat */
+        .cat-eyes {
+            display: flex;
+            justify-content: space-around;
+            padding: 30px 20px 0;
+        }
+
+        .eye {
+            width: 12px;
+            height: 12px;
+            background: #333;
+            border-radius: 50%;
+        }
+
+        /* Nez du chat */
+        .cat-nose {
+            width: 8px;
+            height: 6px;
+            background: #ff69b4;
+            border-radius: 50%;
+            margin: 5px auto;
+        }
+
+        /* Bouche du chat */
+        .cat-mouth {
+            width: 30px;
+            height: 15px;
+            border: 2px solid #333;
+            border-top: none;
+            border-radius: 0 0 15px 15px;
+            margin: 0 auto;
+        }
+
+        /* Petit cœur */
+        .heart {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            width: 30px;
+            height: 30px;
+            animation: heartbeat 1.5s infinite;
+        }
+
+        .heart::before,
+        .heart::after {
+            content: '';
+            position: absolute;
+            width: 15px;
+            height: 24px;
+            background: #ff1744;
+            border-radius: 15px 15px 0 0;
+        }
+
+        .heart::before {
+            left: 15px;
+            transform: rotate(-45deg);
+            transform-origin: 0 100%;
+        }
+
+        .heart::after {
+            left: 0;
+            transform: rotate(45deg);
+            transform-origin: 100% 100%;
+        }
+
+        @keyframes heartbeat {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.2); }
+        }
+
+        /* Titre */
+        h1 {
+            color: #ff1744;
+            font-size: 1.8em;
+            margin: 30px 0 20px;
+            line-height: 1.4;
+        }
+
+        /* Conteneur des boutons */
+        .buttons-container {
+            margin: 30px 0;
+            display: flex;
+            gap: 20px;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        /* Bouton Oui */
+        .btn-yes {
+            background: #ff1744;
+            color: white;
+            border: none;
+            padding: 15px 40px;
+            font-size: 1.2em;
+            border-radius: 50px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(255, 23, 68, 0.4);
+        }
+
+        .btn-yes:hover {
+            background: #d81b60;
+            transform: scale(1.05);
+            box-shadow: 0 6px 20px rgba(255, 23, 68, 0.6);
+        }
+
+        /* Bouton Non */
+        .btn-no {
+            background: #9e9e9e;
+            color: white;
+            border: none;
+            padding: 15px 40px;
+            font-size: 1.2em;
+            border-radius: 50px;
+            cursor: pointer;
+            position: absolute;
+            transition: all 0.1s ease;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+        }
+
+        /* Texte sous le bouton Non */
+        .no-text {
+            color: #666;
+            font-size: 0.9em;
+            margin-top: 10px;
+            font-style: italic;
+        }
+
+        /* Écran de célébration */
+        .celebration {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(255, 195, 213, 0.95);
+            z-index: 1000;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+        }
+
+        .celebration.active {
+            display: flex;
+        }
+
+        .celebration h2 {
+            font-size: 3em;
+            color: #ff1744;
+            margin-bottom: 30px;
+            animation: bounce 0.5s infinite alternate;
+        }
+
+        @keyframes bounce {
+            from { transform: translateY(0); }
+            to { transform: translateY(-20px); }
+        }
+
+        .celebration img {
+            max-width: 400px;
+            width: 90%;
+            border-radius: 20px;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
+        }
+
+        /* Confettis */
+        .confetti {
+            position: fixed;
+            width: 10px;
+            height: 10px;
+            background: #ff1744;
+            position: absolute;
+            animation: confetti-fall 3s linear infinite;
+        }
+
+        @keyframes confetti-fall {
+            to {
+                transform: translateY(100vh) rotate(360deg);
+                opacity: 0;
+            }
+        }
+
+        /* Responsive */
+        @media (max-width: 600px) {
+            .card {
+                padding: 30px 20px;
+            }
+
+            h1 {
+                font-size: 1.4em;
+            }
+
+            .btn-yes, .btn-no {
+                padding: 12px 30px;
+                font-size: 1em;
+            }
+
+            .celebration h2 {
+                font-size: 2em;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Carte principale -->
+    <div class="card">
+        <!-- Chat mignon avec cœur -->
+        <div class="cat-container">
+            <div class="heart"></div>
+            <div class="cat">
+                <div class="cat-eyes">
+                    <div class="eye"></div>
+                    <div class="eye"></div>
+                </div>
+                <div class="cat-nose"></div>
+                <div class="cat-mouth"></div>
+            </div>
+        </div>
+
+        <!-- Titre -->
+        <h1>Belle métisse es-ce que tu veux être ma valentine cette année ?</h1>
+
+        <!-- Boutons -->
+        <div class="buttons-container">
+            <button class="btn-yes" onclick="handleYes()">Oui</button>
+            <button class="btn-no" id="btnNo" onmouseover="moveButton()" onmousedown="moveButton()">Non</button>
+        </div>
+
+        <!-- Texte sous le bouton Non -->
+        <p class="no-text">*Non* à l'air timide 😈</p>
+    </div>
+
+    <!-- Écran de célébration -->
+    <div class="celebration" id="celebration">
+        <h2>OUAI OUAI OUAI! 🎉</h2>
+        <img src="https://i.imgflip.com/3uw3r.jpg" alt="Celebration meme">
+    </div>
+
+    <script>
+        // Référence au bouton Non
+        const btnNo = document.getElementById('btnNo');
+        
+        // Fonction pour déplacer le bouton Non aléatoirement
+        function moveButton() {
+            // Obtenir les dimensions de la fenêtre
+            const windowWidth = window.innerWidth;
+            const windowHeight = window.innerHeight;
+            
+            // Obtenir les dimensions du bouton
+            const btnWidth = btnNo.offsetWidth;
+            const btnHeight = btnNo.offsetHeight;
+            
+            // Calculer des positions aléatoires (en évitant les bords)
+            const maxX = windowWidth - btnWidth - 20;
+            const maxY = windowHeight - btnHeight - 20;
+            
+            const randomX = Math.floor(Math.random() * maxX);
+            const randomY = Math.floor(Math.random() * maxY);
+            
+            // Appliquer les nouvelles positions
+            btnNo.style.left = randomX + 'px';
+            btnNo.style.top = randomY + 'px';
+        }
+        
+        // Fonction pour gérer le clic sur Oui
+        function handleYes() {
+            // Afficher l'écran de célébration
+            const celebration = document.getElementById('celebration');
+            celebration.classList.add('active');
+            
+            // Créer des confettis
+            createConfetti();
+        }
+        
+        // Fonction pour créer des confettis animés
+        function createConfetti() {
+            const colors = ['#ff1744', '#ff69b4', '#ffc3d5', '#ffb3c6', '#d81b60', '#f06292'];
+            const confettiCount = 100;
+            
+            for (let i = 0; i < confettiCount; i++) {
+                setTimeout(() => {
+                    const confetti = document.createElement('div');
+                    confetti.className = 'confetti';
+                    
+                    // Position aléatoire en haut de l'écran
+                    confetti.style.left = Math.random() * 100 + '%';
+                    confetti.style.top = '-10px';
+                    
+                    // Couleur aléatoire
+                    confetti.style.background = colors[Math.floor(Math.random() * colors.length)];
+                    
+                    // Taille aléatoire
+                    const size = Math.random() * 10 + 5;
+                    confetti.style.width = size + 'px';
+                    confetti.style.height = size + 'px';
+                    
+                    // Délai d'animation aléatoire
+                    confetti.style.animationDelay = Math.random() * 3 + 's';
+                    confetti.style.animationDuration = Math.random() * 3 + 2 + 's';
+                    
+                    document.body.appendChild(confetti);
+                    
+                    // Supprimer le confetti après l'animation
+                    setTimeout(() => {
+                        confetti.remove();
+                    }, 5000);
+                }, i * 30);
+            }
+        }
+        
+        // Initialiser la position du bouton Non au chargement
+        window.addEventListener('load', () => {
+            moveButton();
+        });
+    </script>
+</body>
+</html>
